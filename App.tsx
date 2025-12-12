@@ -22,7 +22,7 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
   const [message, setMessage] = useState('Khởi động hệ thống...');
 
   useEffect(() => {
-    const duration = 5000; // 5 giây
+    const duration = 3500; // Giảm xuống 3.5 giây cho nhanh hơn chút
     const intervalTime = 50;
     const steps = duration / intervalTime;
     
@@ -33,7 +33,6 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
       const newProgress = Math.min((currentStep / steps) * 100, 100);
       setProgress(newProgress);
 
-      // Thay đổi thông báo dựa trên %
       if (newProgress > 10 && newProgress < 30) setMessage('Đang kết nối vệ tinh Bến Thành...');
       else if (newProgress >= 30 && newProgress < 60) setMessage('Tải dữ liệu lịch sử & kinh tế...');
       else if (newProgress >= 60 && newProgress < 90) setMessage('Hiệu chỉnh AI Chú Ba...');
@@ -41,7 +40,7 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
 
       if (currentStep >= steps) {
         clearInterval(timer);
-        setTimeout(onFinish, 200); // Đợi 1 chút khi 100% rồi mới ẩn
+        setTimeout(onFinish, 200); 
       }
     }, intervalTime);
 
@@ -72,6 +71,58 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
       </div>
     </div>
   );
+};
+
+// --- Màn hình chọn chế độ (Mới) ---
+const ModeSelectionScreen = ({ onSelect }: { onSelect: (mode: 'DESKTOP' | 'MOBILE') => void }) => {
+    return (
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+            <div className="max-w-4xl w-full">
+                <div className="text-center mb-12">
+                    <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-3 uppercase tracking-tight">
+                        Chọn thiết bị của bạn
+                    </h1>
+                    <p className="text-slate-500 font-medium">Để ứng dụng hiển thị đẹp nhất, hãy cho chúng tôi biết bạn đang dùng thiết bị gì?</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 px-4">
+                    {/* Desktop Mode Card */}
+                    <button 
+                        onClick={() => onSelect('DESKTOP')}
+                        className="group relative bg-white border-2 border-slate-100 hover:border-emerald-500 p-8 rounded-[2rem] transition-all duration-300 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-emerald-100/50 hover:-translate-y-2 flex flex-col items-center text-center overflow-hidden"
+                    >
+                        <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                        <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-800 group-hover:text-emerald-600 mb-3">Máy Tính / Laptop</h2>
+                        <p className="text-slate-500 text-sm leading-relaxed">
+                            Ứng dụng sẽ hiển thị trong một <strong>khung điện thoại giả lập</strong> ở giữa màn hình. Phù hợp khi bạn đang ngồi máy tính.
+                        </p>
+                    </button>
+
+                    {/* Mobile Mode Card */}
+                    <button 
+                         onClick={() => onSelect('MOBILE')}
+                         className="group relative bg-white border-2 border-slate-100 hover:border-blue-500 p-8 rounded-[2rem] transition-all duration-300 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-100/50 hover:-translate-y-2 flex flex-col items-center text-center overflow-hidden"
+                    >
+                        <div className="absolute top-0 left-0 w-full h-2 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                         <div className="w-24 h-24 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-800 group-hover:text-blue-600 mb-3">Điện Thoại / Tablet</h2>
+                        <p className="text-slate-500 text-sm leading-relaxed">
+                            Ứng dụng sẽ hiển thị <strong>toàn màn hình</strong> để bạn dễ dàng vuốt chạm. Phù hợp khi bạn đang dùng smartphone.
+                        </p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 const AppContent: React.FC = () => {
@@ -257,26 +308,43 @@ const AppContent: React.FC = () => {
   );
 };
 
-// Main App Container handles Responsive Layout (Phone Frame vs Full Screen)
+// Main App Container handles Responsive Layout based on User Selection
 const App: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-slate-100 md:bg-slate-900 md:flex md:items-center md:justify-center md:p-8 font-sans overflow-hidden">
-      {/* Desktop Background Art */}
-      <div className="hidden md:block absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1555217851-6141535bd771?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center pointer-events-none blur-sm"></div>
+  const [viewMode, setViewMode] = useState<'UNSET' | 'DESKTOP' | 'MOBILE'>('UNSET');
 
-      {/* Phone Frame Container - Only active on 'md' screens and up */}
-      <div className="w-full h-full md:w-[420px] md:h-[850px] md:max-h-[90vh] bg-white md:rounded-[3rem] md:border-[12px] md:border-slate-800 md:shadow-2xl overflow-hidden relative shadow-slate-900/50 flex flex-col">
+  if (viewMode === 'UNSET') {
+    return <ModeSelectionScreen onSelect={setViewMode} />;
+  }
+
+  // Chế độ Máy Tính: Có khung điện thoại, background đẹp
+  if (viewMode === 'DESKTOP') {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 md:p-8 font-sans overflow-hidden">
+        {/* Desktop Background Art */}
+        <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1555217851-6141535bd771?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center pointer-events-none blur-sm"></div>
+
+        {/* Phone Frame Container */}
+        <div className="w-full max-w-[420px] h-[850px] max-h-[90vh] bg-white rounded-[3rem] border-[12px] border-slate-800 shadow-2xl overflow-hidden relative shadow-slate-900/50 flex flex-col transition-all duration-500 animate-fade-in-up">
+          {/* Notch/Camera */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-slate-800 rounded-b-2xl z-[100] pointer-events-none"></div>
+          
+          <AppContent />
+        </div>
         
-        {/* Notch/Camera for decoration on desktop */}
-        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-40 h-7 bg-slate-800 rounded-b-2xl z-[100] pointer-events-none"></div>
-        
+        {/* Helper Text */}
+        <div className="absolute bottom-4 left-0 w-full text-center text-slate-500 text-sm font-medium tracking-wide">
+          <button onClick={() => setViewMode('UNSET')} className="hover:text-white transition-colors underline opacity-60 hover:opacity-100">
+             Quay lại chọn chế độ
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Chế độ Điện Thoại: Full màn hình, không padding
+  return (
+    <div className="h-screen w-screen bg-white font-sans overflow-hidden">
         <AppContent />
-      </div>
-      
-      {/* Desktop Helper Text */}
-      <div className="hidden md:block absolute bottom-8 text-slate-500 text-sm font-medium tracking-wide">
-        Phiên bản giả lập di động - Phường Bến Thành
-      </div>
     </div>
   );
 };
